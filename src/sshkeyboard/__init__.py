@@ -549,11 +549,12 @@ def _is_unix_ansi(char):
 
 
 def _read_and_parse_unix_ansi(char):
-    char += _read_unix_stdin(5)
-    if char in _UNIX_ANSI_CHAR_TO_READABLE:
-        return _UNIX_ANSI_CHAR_TO_READABLE[char], char
-    else:
-        return None, char
+    extra = _read_unix_stdin(5)
+    if extra is not None:
+        char += extra
+        if char in _UNIX_ANSI_CHAR_TO_READABLE:
+            return _UNIX_ANSI_CHAR_TO_READABLE[char], char
+    return None, char
 
 
 async def _react_to_input(state, options):
